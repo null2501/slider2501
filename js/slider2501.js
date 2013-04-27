@@ -92,7 +92,6 @@ function SLIDER2501(conf){
 		if(ply){this.stop();this.play()}
 	}
 	this.wte=function(){
-		return false;
 		var t;
 		var el = document.createElement('fakeelement');
 		var transitions = {
