@@ -3,7 +3,28 @@
 <head>
 <link href="css/slider2501.css" media="screen" rel="stylesheet" type="text/css">
 <style>
-#slider1{width:600px;height:360px;background-color:#ffcc00}
+body {font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:1.4em;background-color:#ffffff;color:#555;}
+.textbox {
+	-moz-border-radius:15px;
+	border-radius: 15px;
+	padding: 20px;
+	background-color:#eee;
+	width: 40%;
+	position: absolute;
+	box-shadow: 3px 3px 20px #000;
+}
+
+.boxwrapper{position:relative;width:100%;height:100%}
+.textbox.left{bottom:30px;left:30px}
+.textbox.right{top:30px;right:30px}
+
+.coffee {background-image:url(pics/coffee.jpg)}
+.roses {background-image:url(pics/roses.jpg)}
+
+
+h3 {margin:0 0 4px 0;padding:0;font-size:18px;font-weight:bold;line-height:1.4em}
+#slider1{width:890px;height:400px;background-color:#ffcc00}
+
 </style>
 <title>Slider2501 demo</title>
 </head>
@@ -12,21 +33,40 @@
 <div id="slider1" class="sl2501">
 	<ul>
 		<li>
-			Slide 1
-		</li>
-		<li class="selected">
-			Slide 2
-			<ul>
-				<li>1</li>
-				<li>2</li>
-				<li>3</li>
-			</ul>
+			<img src="pics/ny.jpg">
 		</li>
 		<li>
-			Slide 3
+			<div class="boxwrapper coffee">
+				<div class="textbox left">
+					<h3>A Different Title</h3>
+					I intend to assist in the effort to reestablish communication with Starfleet. However, if crew morale is better served by my roaming the halls weeping, I will gladly defer to your medical expertise. Excuse me.
+				</div>
+				<div class="textbox right">
+					<h3>Yet Another Title</h3>
+					It is curious how often you humans manage to obtain that which you do not want. The creature within me is gone. I am free of it, and the pain. I am also quite blind. An equitable trade, Doctor. Thank you.
+				</div>
+			</div>
 		</li>
+		<li>
+			<img src="pics/spock.jpg">
+		</li>
+		<li>
+			<div class="boxwrapper roses">
+				<div class="textbox left">
+					<h3>A Dubious Title</h3>
+					You're assuming that Nero knows how events are predicted to unfold. The contrary, Nero's very presence has altered the flow of history, beginning with the attack on the U.S.S. Kelvin, culminating in the events of today, thereby creating an entire new chain of incidents that cannot be anticipated by either party.
+				</div>
+				<div class="textbox right">
+					<h3>Yet Another Small Title</h3>
+					 And, yet, you can be in two places at once. I urge you to remain in Starfleet. I have already located a suitable planet on which to establish a Vulcan colony. Spock, in this case, do yourself a favor: Put aside logic. Do what feels right.
+				</div>
+			</div>
+		</li>
+
+
 	</ul>
 </div>
+
 <a href="#" onclick="sl1.go('prev');return false;">PREV</a> -
 <a href="#" onclick="sl1.go('next');return false;">NEXT</a>
 
