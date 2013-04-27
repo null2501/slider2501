@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" class="" style="">
+<head>
+<link href="css/slider2501.css" media="screen" rel="stylesheet" type="text/css">
+<style>
+#slider1{width:600px;height:360px;background-color:#ffcc00}
+</style>
+<title>Slider2501 demo</title>
+</head>
+<body>
+<h1>Slider2501 demo</h1>
+<div id="slider1" class="sl2501">
+	<ul>
+		<li>
+			Slide 1
+		</li>
+		<li class="selected">
+			Slide 2
+			<ul>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+			</ul>
+		</li>
+		<li>
+			Slide 3
+		</li>
+	</ul>
+</div>
+<a href="#" onclick="sl1.go('prev');return false;">PREV</a> -
+<a href="#" onclick="sl1.go('next');return false;">NEXT</a>
+
+<script src="js/slider2501.js" type="text/javascript"></script>
+<script type="text/javascript">
+var sl1=new SLIDER2501({
+		id: 'slider1',
+		auto: 4,
+		loop: true
+	});
+</script>
+</body>
+</html>

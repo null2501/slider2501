@@ -1,0 +1,4 @@
+div.sl2501 {position:relative;overflow:hidden;}
+div.sl2501 > ul {width:100%;height:100%;list-style:none;position:relative;margin:0;padding:0}
+div.sl2501 > ul > li{display:none;margin:0;padding:0;width:100%;height:100%; float:left;}
+div.sl2501 > ul > li.selected{display:block;}
