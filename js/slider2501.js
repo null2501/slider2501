@@ -8,12 +8,16 @@ function SLIDER2501(conf){
 	this.init=function(){
 		obj=document.getElementById(conf['id']);
 		uobj=obj.getElementsByTagName("ul")[0];w=uobj.offsetWidth;h=uobj.offsetHeight;
+		uobj.style.webkitPerspective='1000';
+		uobj.style.webkitBackfaceVisibility='hidden';
 		te=this.wte();
 		lcnt=0;
 		for(var i in uobj.childNodes)if(typeof uobj.childNodes[i].innerHTML!=='undefined'){
 			lobj[lcnt++]=uobj.childNodes[i];
 			if(uobj.childNodes[i].className.indexOf('selected')>-1)sel=lcnt-1;
 			uobj.childNodes[i].style.width=w+'px';uobj.childNodes[i].style.display='block';
+			uobj.childNodes[i].style.webkitPerspective='1000';
+			uobj.childNodes[i].style.webkitBackfaceVisibility='hidden';
 		}
 		dst=sel;
 		if(conf['loop']){
