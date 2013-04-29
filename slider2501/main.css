@@ -1,0 +1,32 @@
+
+div.sl2501x,div.sl2501xx,ul.sl2501,ul.sl2501 > li{margin:0;padding:0;position:relative}
+div.sl2501x{overflow:hidden}
+ul.sl2501{width:100%;height:100%;list-style:none;overflow:hidden}
+div.sl2501x > ul.sl2501 {overflow:visible}
+ul.sl2501 > li{display:none;margin:0;padding:0;width:100%;height:100%;float:left}
+ul.sl2501 > li.active{display:block}
+div.sl2501x > ul.sl2501 > li {display:block}
+
+div.sl2501x,ul.sl2501,ul.sl2501>li{
+  -webkit-transform: translate3d(0,0,0);
+  -moz-transform: translate3d(0,0,0);
+  -o-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+}
+
+div.sl2501xx a.left, div.sl2501xx a.right {z-index:2;width:42px;height:42px;display:block;position:absolute;top:50%;margin-top:-21px;background-image:url(lr.png);
+-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+ filter: alpha(opacity=50);
+ -moz-opacity: 0.50;
+ opacity: 0.50;
+}
+div.sl2501xx a.left:hover, div.sl2501xx a.right:hover {
+-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+ filter: alpha(opacity=90);
+ -moz-opacity: 0.90;
+ opacity: 0.90;
+ }
+div.sl2501xx a.left {left:4px}
+div.sl2501xx a.right {right:4px;background-position:42px 0}
