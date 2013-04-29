@@ -30,3 +30,14 @@ div.sl2501xx a.left:hover, div.sl2501xx a.right:hover {
  }
 div.sl2501xx a.left {left:4px}
 div.sl2501xx a.right {right:4px;background-position:42px 0}
+
+div.sl2501xx  {margin-bottom:32px;}
+div.controls { margin:0;padding:10px 0;width:100%;text-align:center;position:relative;}
+div.controls a { display:inline-block;width:10px;height:10px;background-color:#888;
+-moz-border-radius: 6px;  
+-webkit-border-radius: 6px; 
+border-radius: 6px;
+margin: 0 6px;
+border:1px solid #ccc;
+}
+div.sl2501xx div.controls a:hover,div.sl2501xx div.controls a.active { background-color:#444}

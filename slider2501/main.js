@@ -2,12 +2,15 @@
 /* Twitter: @Null_2501 - https://github.com/null2501/slider2501 */
 
 function SLIDER2501(conf){
-	var self=this,obj=false,xobj=false,xxobj=false,hw=false,lcnt=0,lobj=[],w=0,h=0,act=0,dst=0,actx=0,dstx=0,lk=0,dtm=0,dltx=0,tmr=false,atmr=false,ply=false,lr=[];
+	var self=this,obj=false,xobj=false,xxobj=false,hw=false,lcnt=0,lobj=[],w=0,h=0,act=0,dst=0,actx=0,dstx=0,lk=0,dtm=0,dltx=0,tmr=false,atmr=false,ply=false,lr=[],ctrl=[],cdiv=false;
 
 	if(typeof(conf['loop'])=='undefined')conf['loop']=false;
 	if(typeof(conf['auto'])=='undefined')conf['auto']=0;
-	if(typeof(conf['lr'])=='undefined')conf['lr']=true;
+	if(typeof(conf['next'])=='undefined')conf['next']=true;
+	if(typeof(conf['prev'])=='undefined')conf['prev']=true;
+	if(typeof(conf['controls'])=='undefined')conf['controls']=true;
 
+	
 	var requestAnimationFrame=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame;
 	if(typeof requestAnimationFrame=='undefined')requestAnimationFrame=false;
 	window.requestAnimationFrame=requestAnimationFrame;
@@ -32,24 +35,50 @@ function SLIDER2501(conf){
 			obj.style.width=(w*lcnt)+'px';
 		}
 		this.pos();
-		if(conf['lr']){
-			if(lr.length==0){
-				lr['l']=document.createElement('a');
-				lr['l'].className="left";
-				lr['l'].href='#';
-				lr['l'].onclick=function(){self.go('prev');return false};
-				xxobj.appendChild(lr['l']);
-				lr['r']=document.createElement('a');
-				lr['r'].className="right";
-				lr['r'].href='#';
-				lr['r'].onclick=function(){self.go('next');return false};
-				xxobj.appendChild(lr['r']);
-				}
-		}
+		this.create_button('next','right');
+		this.create_button('prev','left');
+		this.create_controls();
+		this.update();
 		lk=0;
 		this.stop();
 		this.play();
 		if(hw)obj.addEventListener(hw,function(){self.hw_callback()},false);
+	}
+	this.create_controls=function(){
+		if(conf.controls===false)return false;
+		if(ctrl.length===lcnt)return true;
+		for(var i=0;i<ctrl.length;i++){
+			ctrl[i].parentNode.removeChild(ctrl[i]);
+		}
+		ctrl=[];
+		if(cdiv===false){
+			if(conf.controls===true){
+				cdiv=document.createElement('div');cdiv.className='controls';
+				xxobj.appendChild(cdiv);
+			} else cdiv=document.getElementById(conf.controls);
+		}
+		for(i=0;i<lcnt;i++){
+			ctrl[i]=document.createElement('a');ctrl[i].href='#';ctrl[i].idx=i;
+			ctrl[i].onclick=function(){self.go(this.idx);return false};
+			cdiv.appendChild(ctrl[i]);
+		}		
+	}
+	this.create_button=function(c,st){
+		if(typeof(lr[c])=='undefined'){
+			if(!(conf[c]===false)){
+				if(conf[c]===true){
+					lr[c]=document.createElement('a');lr[c].className=st;lr[c].href='#';
+					xxobj.appendChild(lr[c]);
+				} else lr[c]=document.getElementById(conf[c]);
+				lr[c].onclick=function(){self.go(c);return false};
+			} else lr[c]=false;
+		}
+	}
+	this.update=function(){
+		for(var i=0;i<ctrl.length;i++){
+			if(i==act)ctrl[i].className='active';
+			else ctrl[i].className='';
+		}
 	}
 	this.go=function(d,auto){
 		if(lk++>0)return false;
@@ -88,6 +117,7 @@ function SLIDER2501(conf){
 		if(dst<0)dst=lcnt-1;if(dst>lcnt-1)dst=0;
 		act=dst;
 		this.pos();
+		this.update();
 		lk=0;
 		if(ply){this.stop();this.play()}
 	}
