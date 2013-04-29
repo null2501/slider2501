@@ -1,4 +1,4 @@
-/* Slider2501, a standalone lightweight JavaScript slider */
+/* Slider2501, yet another standalone lightweight JavaScript slider */
 /* Twitter: @Null_2501 - https://github.com/null2501/slider2501 */
 
 function SLIDER2501(conf){
