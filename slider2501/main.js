@@ -1,3 +1,6 @@
+/* Slider2501, a standalone lightweight JavaScript slider */
+/* Twitter: @Null_2501 - https://github.com/null2501/slider2501 */
+
 function SLIDER2501(conf){
 	var self=this,obj=false,xobj=false,xxobj=false,hw=false,lcnt=0,lobj=[],w=0,h=0,act=0,dst=0,actx=0,dstx=0,lk=0,dtm=0,dltx=0,tmr=false,atmr=false,ply=false,lr=[];
 
