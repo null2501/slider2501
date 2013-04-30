@@ -69,9 +69,9 @@ function SLIDER2501(conf){
 			} else cdiv=document.getElementById(conf.controls);
 		}
 		for(i=0;i<lcnt;i++){
-			ctrl[i]=document.createElement('a');ctrl[i].href='#';ctrl[i].idx=i+1;
+			ctrl[i]=document.createElement('a');ctrl[i].href='#';ctrl[i].setAttribute('data-idx', i+1);
 			ctrl[i].onclick=function(){return false};
-			this.add_event(ctrl[i],'click',function(){self.go(this.idx);return false});
+			this.add_event(ctrl[i],'click',function(e){e=e||window.event;var o=this;if(e.srcElement)o=e.srcElement;self.go(o.getAttribute('data-idx'));return false});
 			cdiv.appendChild(ctrl[i]);
 		}		
 	}
@@ -132,7 +132,7 @@ function SLIDER2501(conf){
 		if(dstx!=x){
 			obj.style.left=x+"px";
 			if(requestAnimationFrame){
-				requestAnimationFrame(self.mover);
+				requestAnimationFrame(function(){self.mover});
 			} else {
 				tmr=setTimeout(function(){self.mover()},16);
 			}
