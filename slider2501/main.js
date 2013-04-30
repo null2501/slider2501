@@ -6,11 +6,10 @@ function SLIDER2501(conf){
 
 	if(typeof(conf['loop'])=='undefined')conf['loop']=false;
 	if(typeof(conf['auto'])=='undefined')conf['auto']=0;
-	if(typeof(conf['next'])=='undefined')conf['next']=true;
-	if(typeof(conf['prev'])=='undefined')conf['prev']=true;
+	if(typeof(conf['arrows'])=='undefined')conf['arrows']=true;
 	if(typeof(conf['controls'])=='undefined')conf['controls']=true;
+	if(typeof(conf['callback'])=='undefined')conf['callback']=false;
 
-	
 	var requestAnimationFrame=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame;
 	if(typeof requestAnimationFrame=='undefined')requestAnimationFrame=false;
 	window.requestAnimationFrame=requestAnimationFrame;
@@ -35,14 +34,24 @@ function SLIDER2501(conf){
 			obj.style.width=(w*lcnt)+'px';
 		}
 		this.pos();
-		this.create_button('next','right');
-		this.create_button('prev','left');
+		this.create_arrows();
 		this.create_controls();
 		this.update();
 		lk=0;
 		this.stop();
 		this.play();
 		if(hw)obj.addEventListener(hw,function(){self.hw_callback()},false);
+	}
+	this.create_arrows=function(){
+		if(conf.arrows===false)return false;
+		if(lr.length==2)return true;
+		var m;
+		if(conf.arrows===true)m=xxobj;
+		else m=getElementById(conf.arrows);
+		lr['prev']=document.createElement('a');lr['prev'].className='prev';lr['prev'].href='#';m.appendChild(lr['prev']);
+		lr['next']=document.createElement('a');lr['next'].className='next';lr['next'].href='#';m.appendChild(lr['next']);
+		this.add_event(lr['prev'],'click',function(){self.go('prev');return false});
+		this.add_event(lr['next'],'click',function(){self.go('next');return false});
 	}
 	this.create_controls=function(){
 		if(conf.controls===false)return false;
@@ -58,23 +67,13 @@ function SLIDER2501(conf){
 			} else cdiv=document.getElementById(conf.controls);
 		}
 		for(i=0;i<lcnt;i++){
-			ctrl[i]=document.createElement('a');ctrl[i].href='#';ctrl[i].idx=i;
-			ctrl[i].onclick=function(){self.go(this.idx);return false};
+			ctrl[i]=document.createElement('a');ctrl[i].href='#';ctrl[i].idx=i+1;
+			this.add_event(ctrl[i],'click',function(){self.go(this.idx);return false});
 			cdiv.appendChild(ctrl[i]);
 		}		
 	}
-	this.create_button=function(c,st){
-		if(typeof(lr[c])=='undefined'){
-			if(!(conf[c]===false)){
-				if(conf[c]===true){
-					lr[c]=document.createElement('a');lr[c].className=st;lr[c].href='#';
-					xxobj.appendChild(lr[c]);
-				} else lr[c]=document.getElementById(conf[c]);
-				lr[c].onclick=function(){self.go(c);return false};
-			} else lr[c]=false;
-		}
-	}
 	this.update=function(){
+		if(typeof(conf.callback)!='boolean'){conf.callback(act+1)}
 		for(var i=0;i<ctrl.length;i++){
 			if(i==act)ctrl[i].className='active';
 			else ctrl[i].className='';
@@ -93,7 +92,7 @@ function SLIDER2501(conf){
 			dst++;
 			if((!conf['loop'])&&(dst>=lcnt))dst=0;
 		}else{
-			dst=parseInt(d);
+			dst=parseInt(d)-1;
 			if(dst<0)dst=0;
 			if(dst>=lcnt)dst=lcnt-1;
 		}
@@ -183,5 +182,15 @@ function SLIDER2501(conf){
 		ply=true;
 		atmr=setTimeout(function(){self.go('next',true)},conf['auto']*1000);
 	}	
+	this.add_event=function(obj, evType, fn) {
+	    if (obj.addEventListener) {
+	        obj.addEventListener(evType, fn, false);
+	        return true;
+	    } else if (obj.attachEvent) {
+	        var r = obj.attachEvent("on" + evType, fn);
+	        return r;
+	    }
+	}
+	
 	this.init();
 }
