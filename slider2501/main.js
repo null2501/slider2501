@@ -50,6 +50,8 @@ function SLIDER2501(conf){
 		else m=getElementById(conf.arrows);
 		lr['prev']=document.createElement('a');lr['prev'].className='prev';lr['prev'].href='#';m.appendChild(lr['prev']);
 		lr['next']=document.createElement('a');lr['next'].className='next';lr['next'].href='#';m.appendChild(lr['next']);
+		lr['prev'].onclick=function(){return false};lr['next'].onclick=function(){return false};
+	
 		this.add_event(lr['prev'],'click',function(){self.go('prev');return false});
 		this.add_event(lr['next'],'click',function(){self.go('next');return false});
 	}
@@ -68,6 +70,7 @@ function SLIDER2501(conf){
 		}
 		for(i=0;i<lcnt;i++){
 			ctrl[i]=document.createElement('a');ctrl[i].href='#';ctrl[i].idx=i+1;
+			ctrl[i].onclick=function(){return false};
 			this.add_event(ctrl[i],'click',function(){self.go(this.idx);return false});
 			cdiv.appendChild(ctrl[i]);
 		}		
