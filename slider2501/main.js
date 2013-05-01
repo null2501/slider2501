@@ -27,7 +27,7 @@ function SLIDER2501(conf){
 			lcnt++;
 		}
 		dst=act;
-		if(conf.loop){
+		if(conf.loop===true){
 			obj.style.width=(w*(lcnt+2))+'px';
 			this.add_clones();
 		} else {
@@ -81,26 +81,35 @@ function SLIDER2501(conf){
 			if(i==act)ctrl[i].className='active';
 			else ctrl[i].className='';
 		}
+		if(typeof(lr.next)!='undefined'){
+			var add={prev:'',next:''};
+			if(conf.loop===false){
+				if(act<1)add.prev=' blocked';
+				if(act>lcnt-2)add.next=' blocked';
+			}
+			lr['next'].className='next'+add.next;
+			lr['prev'].className='prev'+add.prev;
+		}
 	}
 	this.go=function(d,auto){
 		if(lk++>0)return false;
 		if(typeof(auto)=='undefined')auto=false;
 		if((!auto)&&(ply))this.stop();
-
+		if(conf.loop===false)if(((d==='prev')&&(act<1))||((d==='next')&&(act>lcnt-2))){lk=0;return false}
 		dst=act;
 		if(d==='prev'){
 			dst--;
-			if((!conf['loop'])&&(dst<0))dst=lcnt-1;
+			if((conf.loop==='semi')&&(dst<0))dst=lcnt-1;
 		}else if(d==='next'){
 			dst++;
-			if((!conf['loop'])&&(dst>=lcnt))dst=0;
+			if((conf.loop==='semi')&&(dst>=lcnt))dst=0;
 		}else{
 			dst=parseInt(d)-1;
 			if(dst<0)dst=0;
 			if(dst>=lcnt)dst=lcnt-1;
 		}
 		if (dst==act){lk=0;return false}
-		if(conf['loop'])dstx=-(w*(dst+1));
+		if(conf.loop===true)dstx=-(w*(dst+1));
 		else dstx=-(w*dst);
 
 		if(hw)this.hw_mover(dstx,true);
@@ -110,7 +119,7 @@ function SLIDER2501(conf){
 		}
 	}
 	this.pos=function(){
-		if(conf['loop'])actx=-(w*(act+1));
+		if(conf.loop===true)actx=-(w*(act+1));
 		else actx=-(w*act);
 		if(hw)this.hw_mover(actx,false);
 		else obj.style.left=actx+'px';

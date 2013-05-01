@@ -30,6 +30,7 @@ div.sl2501xx a.prev:hover, div.sl2501xx a.next:hover {
  }
 div.sl2501xx a.prev {left:4px}
 div.sl2501xx a.next {right:4px;background-position:42px 0}
+div.sl2501xx a.blocked {display:none}
 
 div.sl2501xx{margin-bottom:32px;}
 div.controls { margin:0;padding:10px 0;width:100%;text-align:center;position:relative;}
