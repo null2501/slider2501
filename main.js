@@ -1,7 +1,7 @@
-/* Slider2501, yet another standalone lightweight JavaScript slider */
-/* Twitter: @Null_2501 - https://github.com/null2501/slider2501 */
+/* Thorium Slider, Yet Another Lightweight JavaScript Content Slider */
+/* Twitter: @Null_2501 - https://github.com/null2501/thorium-slider */
 
-function SLIDER2501(conf){
+function THORIUM(conf){
 	var self=this,obj=false,xobj=false,xxobj=false,hw=false,lcnt=0,lobj=[],w=0,h=0,act=0,dst=0,actx=0,dstx=0,lk=0,dtm=0,dltx=0,tmr=false,atmr=false,ply=false,lr=[],ctrl=[],cdiv=false;
 
 	if(typeof(conf['loop'])=='undefined')conf['loop']=false;
@@ -9,6 +9,7 @@ function SLIDER2501(conf){
 	if(typeof(conf['arrows'])=='undefined')conf['arrows']=true;
 	if(typeof(conf['controls'])=='undefined')conf['controls']=true;
 	if(typeof(conf['callback'])=='undefined')conf['callback']=false;
+	if(typeof(conf['shadow'])=='undefined')conf['shadow']=false;
 
 	var requestAnimationFrame=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame;
 	if(typeof requestAnimationFrame=='undefined')requestAnimationFrame=false;
@@ -17,7 +18,15 @@ function SLIDER2501(conf){
 	this.init=function(){
 		if(!obj){obj=document.getElementById(conf['id']);w=obj.offsetWidth;h=obj.offsetHeight}
 		if(!xobj){xobj=document.createElement('div');xobj.id=conf['id']+'-x';xobj.className='sl2501x';xobj.appendChild(obj.parentNode.replaceChild(xobj,obj));xobj.style.width=w+'px';xobj.style.height=h+'px'}
-		if(!xxobj){xxobj=document.createElement('div');xxobj.id=conf['id']+'-xx';xxobj.className='sl2501xx';xxobj.appendChild(xobj.parentNode.replaceChild(xxobj,xobj));xxobj.style.width=w+'px';xxobj.style.height=h+'px'}
+		
+		if(!xxobj){
+			if(document.getElementById(conf['id']+'-wrapper'))xxobj=document.getElementById(conf['id']+'-wrapper');
+			else{xxobj=document.createElement('div');xxobj.id=conf['id']+'-wrapper';xxobj.className='sl2501-wrapper';xxobj.appendChild(xobj.parentNode.replaceChild(xxobj,xobj));xxobj.style.width=w+'px';xxobj.style.height=h+'px'}
+			if(typeof(conf.shadow)=='string'){
+				if(conf.shadow.indexOf('bottom')!=-1)this.appendDiv('','sl2501-botshadow');
+				if(conf.shadow.indexOf('top')!=-1)this.appendDiv('','sl2501-topshadow');
+			}
+		}
 		hw=this.hw_detection();
 		lcnt=0;
 		for(var i in obj.childNodes)if(typeof obj.childNodes[i].innerHTML!=='undefined'){
@@ -203,6 +212,15 @@ function SLIDER2501(conf){
 	        return r;
 	    }
 	}
-	
+	this.appendDiv=function(id,clas,content){
+		if(typeof(clas)=='undefined')clas='';
+		if(typeof(id)=='undefined')id='';
+		if(typeof(content)=='undefined')content='';
+		var o=document.createElement('div');
+		if(id)o.setAttribute('id',id);
+		if(clas)o.className=clas;
+		if(content)o.innerHTML=content;
+		xxobj.appendChild(o);
+	}
 	this.init();
 }

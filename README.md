@@ -1,4 +1,5 @@
-slider2501
-==========
+Thorium Slider
+==============
 
-Lightweight JavaScript content slider
+Yet Another Lightweight JavaScript Content Slider
+

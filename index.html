@@ -25,11 +25,12 @@ body {font-family:Arial, Helvetica, sans-serif;font-size:14px;line-height:1.4em;
 h3 {margin:0 0 4px 0;padding:0;font-size:18px;font-weight:bold;line-height:1.4em}
 
 #slider1{width:890px;height:400px;background-color:#ddd}
+#slider1-wrapper{margin-bottom: 36px}
 </style>
-<title>Slider2501 demo</title>
+<title>Thorium Slider Demo</title>
 </head>
 <body>
-<h1>Slider2501 demo</h1>
+<h1>Thorium Slider Demo</h1>
 <ul id="slider1" class="sl2501">
 		<li>
 			<img src="demopics/ny.jpg">
@@ -62,16 +63,17 @@ h3 {margin:0 0 4px 0;padding:0;font-size:18px;font-weight:bold;line-height:1.4em
 			</div>
 		</li>
 </ul>
-https://github.com/null2501/slider2501
+https://github.com/null2501/thorium-slider
 <script src="main.js" type="text/javascript"></script>
 <script type="text/javascript">
-var sl1=new SLIDER2501({
+	var sl1=new THORIUM({
 		id: 'slider1',
 		auto: 4,
 		loop: true,
 		arrows: true,
 		controls: true,
-		callback: false
+		callback: false,
+		shadow: 'top bottom'
 	});
 </script>
 </body>
