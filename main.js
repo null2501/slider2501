@@ -2,32 +2,36 @@
 /* Twitter: @Null_2501 - https://github.com/null2501/thorium-slider */
 
 function THORIUM(conf){
-	var self=this,obj=false,xobj=false,xxobj=false,hw=false,lcnt=0,lobj=[],w=0,h=0,act=0,dst=0,actx=0,dstx=0,lk=0,dtm=0,dltx=0,tmr=false,atmr=false,ply=false,lr=[],ctrl=[],cdiv=false;
+	var self=this,obj=false,xobj=false,xxobj=false,hw=false,lcnt=0,lobj=[],w=0,h=0,act=0,dst=0,actx=0,dstx=0,lk=0,dtm=0,dltx=0,tmr=false,atmr=false,ply=false,lr=[],ctrl=[],cdiv=false,mob=false,tob=false,nxt=false;
 
-	if(typeof(conf['loop'])=='undefined')conf['loop']=false;
-	if(typeof(conf['auto'])=='undefined')conf['auto']=0;
-	if(typeof(conf['arrows'])=='undefined')conf['arrows']=true;
-	if(typeof(conf['controls'])=='undefined')conf['controls']=true;
-	if(typeof(conf['callback'])=='undefined')conf['callback']=false;
-	if(typeof(conf['shadow'])=='undefined')conf['shadow']=false;
+	if(typeof(conf.loop)=='undefined')conf.loop=false;
+	if(typeof(conf.auto)=='undefined')conf.auto=0;
+	if(typeof(conf.arrows)=='undefined')conf.arrows=true;
+	if(typeof(conf.controls)=='undefined')conf.controls=true;
+	if(typeof(conf.callback)=='undefined')conf.callback=false;
+	if(typeof(conf.shadow)=='undefined')conf.shadow=false;
+	if(typeof(conf.touch)=='undefined')conf.touch=true;
+	if(typeof(conf.speed)=='undefined')conf.speed=600;
+	if(typeof(conf.easing)=='undefined')conf.easing='ease';
 
 	var requestAnimationFrame=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame;
 	if(typeof requestAnimationFrame=='undefined')requestAnimationFrame=false;
 	window.requestAnimationFrame=requestAnimationFrame;
+	if(conf.touch)mob=("ontouchstart" in document.documentElement);
 	
 	this.init=function(){
-		if(!obj){obj=document.getElementById(conf['id']);w=obj.offsetWidth;h=obj.offsetHeight}
-		if(!xobj){xobj=document.createElement('div');xobj.id=conf['id']+'-x';xobj.className='sl2501x';xobj.appendChild(obj.parentNode.replaceChild(xobj,obj));xobj.style.width=w+'px';xobj.style.height=h+'px'}
-		
+		if(!obj){obj=document.getElementById(conf.id);w=obj.offsetWidth;h=obj.offsetHeight}
+		if(!xobj){xobj=document.createElement('div');xobj.id=conf.id+'-x';xobj.className='sl2501x';xobj.appendChild(obj.parentNode.replaceChild(xobj,obj));xobj.style.width=w+'px';xobj.style.height=h+'px'}
 		if(!xxobj){
-			if(document.getElementById(conf['id']+'-wrapper'))xxobj=document.getElementById(conf['id']+'-wrapper');
-			else{xxobj=document.createElement('div');xxobj.id=conf['id']+'-wrapper';xxobj.className='sl2501-wrapper';xxobj.appendChild(xobj.parentNode.replaceChild(xxobj,xobj));xxobj.style.width=w+'px';xxobj.style.height=h+'px'}
+			if(document.getElementById(conf.id+'-wrapper'))xxobj=document.getElementById(conf.id+'-wrapper');
+			else{xxobj=document.createElement('div');xxobj.id=conf.id+'-wrapper';xxobj.className='sl2501-wrapper';xxobj.appendChild(xobj.parentNode.replaceChild(xxobj,xobj));xxobj.style.width=w+'px';xxobj.style.height=h+'px'}
 			if(typeof(conf.shadow)=='string'){
 				if(conf.shadow.indexOf('bottom')!=-1)this.appendDiv('','sl2501-botshadow');
 				if(conf.shadow.indexOf('top')!=-1)this.appendDiv('','sl2501-topshadow');
 			}
 		}
 		hw=this.hw_detection();
+		if(mob)tob=new THORIUM_TOUCH(obj,function(g){self.mgo(g)});
 		lcnt=0;
 		for(var i in obj.childNodes)if(typeof obj.childNodes[i].innerHTML!=='undefined'){
 			lobj[lcnt]=obj.childNodes[i];
@@ -100,8 +104,11 @@ function THORIUM(conf){
 			lr['prev'].className='prev'+add.prev;
 		}
 	}
+	this.mgo=function(d) {
+		this.go(d);
+	}
 	this.go=function(d,auto){
-		if(lk++>0)return false;
+		if(lk++>0){nxt=d;return false}
 		if(typeof(auto)=='undefined')auto=false;
 		if((!auto)&&(ply))this.stop();
 		if(conf.loop===false)if(((d==='prev')&&(act<1))||((d==='next')&&(act>lcnt-2))){lk=0;return false}
@@ -121,8 +128,9 @@ function THORIUM(conf){
 		if(conf.loop===true)dstx=-(w*(dst+1));
 		else dstx=-(w*dst);
 
-		if(hw)this.hw_mover(dstx,true);
-		else{
+		if(hw){
+			this.hw_mover(dstx,true);
+		}else{
 			dtm=new Date().getTime();dltx=dstx-actx;
 			this.mover();
 		}
@@ -140,12 +148,13 @@ function THORIUM(conf){
 		this.update();
 		lk=0;
 		if(ply){this.stop();this.play()}
+		if(nxt!=false){var a=nxt;nxt=false;setTimeout(function(){self.go(a)},1)}
 	}
 	this.mover=function(){
 		var x;
-		var dt=400-(new Date().getTime()-dtm);
-		if(dt>400)dt=400;if(dt<0)dt=0;
-		var att=(Math.PI*(dt/400))+(Math.PI/2),dm=(Math.sin(att)+1)/2;
+		var dt=conf.speed-(new Date().getTime()-dtm);
+		if(dt>conf.speed)dt=conf.speed;if(dt<0)dt=0;
+		var att=(Math.PI*(dt/conf.speed))+(Math.PI/2),dm=(Math.sin(att)+1)/2;
 		if(dt==0)x=dstx;else x=parseInt(actx+(dltx*dm));
 		if(dstx!=x){
 			obj.style.left=x+"px";
@@ -161,7 +170,7 @@ function THORIUM(conf){
 	this.hw_mover=function(x,trans){
 		if(typeof(trans)=='undefined')trans=false;
 		var t='';
-		if(trans)t='all 0.4s ease-in-out';
+		if(trans)t='all '+(conf.speed/1000)+'s '+conf.easing;
 		obj.style.webkitTransition=t;
 		obj.style.mozTransition=t;
 		obj.style.transition=t;
@@ -187,10 +196,10 @@ function THORIUM(conf){
 		return false;
 	}
 	this.add_clones=function(){
-		var g=document.getElementById(conf['id']+'_lano');if(g)g.parentNode.removeChild(g);
-		g=document.getElementById(conf['id']+'_fino');if(g)g.parentNode.removeChild(g);
-		var lano=lobj[lcnt-1].cloneNode(true);lano.setAttribute('id',conf['id']+'_lano');
-		var fino = lobj[0].cloneNode(true);fino.setAttribute('id',conf['id']+'_fino');
+		var g=document.getElementById(conf.id+'_lano');if(g)g.parentNode.removeChild(g);
+		g=document.getElementById(conf.id+'_fino');if(g)g.parentNode.removeChild(g);
+		var lano=lobj[lcnt-1].cloneNode(true);lano.setAttribute('id',conf.id+'_lano');
+		var fino = lobj[0].cloneNode(true);fino.setAttribute('id',conf.id+'_fino');
 		lobj[-1]=obj.insertBefore(lano,lobj[0])
 		lobj[lcnt]=obj.appendChild(fino);
 	}
@@ -199,9 +208,9 @@ function THORIUM(conf){
 		ply=false;
 	}
 	this.play=function(){
-		if((conf['auto']==0)||(ply))return;
+		if((conf.auto==0)||(ply))return;
 		ply=true;
-		atmr=setTimeout(function(){self.go('next',true)},conf['auto']*1000);
+		atmr=setTimeout(function(){self.go('next',true)},conf.auto*1000);
 	}	
 	this.add_event=function(obj, evType, fn) {
 	    if (obj.addEventListener) {
@@ -218,9 +227,43 @@ function THORIUM(conf){
 		if(typeof(content)=='undefined')content='';
 		var o=document.createElement('div');
 		if(id)o.setAttribute('id',id);
-		if(clas)o.className=clas;
+	http://rinoa.hopto.org/lab/thorium-slider/demopics/ny.jpg	if(clas)o.className=clas;
 		if(content)o.innerHTML=content;
 		xxobj.appendChild(o);
 	}
 	this.init();
+}
+
+function THORIUM_TOUCH(obj,cabe) {
+	var self=this,sx,sy,st,app=0,evt='';
+	var supp=("ontouchstart" in document.documentElement);
+	if(supp)if(navigator.userAgent.match(/(iPod|iPhone|iPad)/) && navigator.userAgent.match(/AppleWebKit/)) app=1;
+	if(supp)obj.addEventListener('touchstart', function(e){self.tstart(e)}, false);
+
+	this.tstart=function(e){
+      sx=e.touches[0].pageX;sy=e.touches[0].pageY;st=new Date();
+	  evt='';
+      obj.addEventListener('touchmove', function(e){self.tmove(e)}, false);
+      obj.addEventListener('touchend', function(e){self.tend(e)}, false);
+	}
+	this.tmove=function(e){
+      if(e.touches.length>1||e.scale&&e.scale!=1)return;
+      var dx=e.touches[0].pageX - sx,dy=e.touches[0].pageY - sy;
+      if (evt=='')if(Math.abs(dx)<Math.abs(dy))evt='scroll';
+      if (evt!='scroll') {
+        e.preventDefault();
+        if(evt!='swipe'){
+			if(Math.abs(dx)>30){
+				evt='swipe';
+				if(dx>0)setTimeout(function(){cabe('prev')},1);
+				else setTimeout(function(){cabe('next')},1);
+	        }	
+	    }
+      }
+	}
+	this.tend=function(e){
+	  evt='';
+      obj.removeEventListener('touchmove', function(e){self.tmove(e)}, false);
+      obj.removeEventListener('touchend', function(e){self.tend(e)}, false);
+	}
 }

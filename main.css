@@ -7,7 +7,7 @@ ul.sl2501 > li{display:block;margin:0;padding:0;width:100%;height:100%;float:lef
 ul.sl2501 > li.active{display:block}
 div.sl2501x > ul.sl2501 > li {display:block}
 
-div.sl2501x,ul.sl2501,ul.sl2501 li,ul.sl2501 img,ul.sl2501 a,ul.sl2501 div{
+div.sl2501x,ul.sl2501,ul.sl2501 li,ul.sl2501 img,ul.sl2501 a{
   -webkit-transform: translate3d(0,0,0);
   -moz-transform: translate3d(0,0,0);
   -o-transform: translate3d(0,0,0);
