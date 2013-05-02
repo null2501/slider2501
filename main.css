@@ -16,7 +16,7 @@ div.sl2501x,ul.sl2501,ul.sl2501 li,ul.sl2501 img,ul.sl2501 a{
   /*-webkit-perspective: 1000;*/
 }
 
-div.sl2501-wrapper a.prev, div.sl2501-wrapper a.next {z-index:3;width:36px;height:51px;display:block;position:absolute;top:50%;margin-top:-25px;background-image:url(lr.png);
+div.sl2501-wrapper a.prev, div.sl2501-wrapper a.next {z-index:3;width:38px;height:51px;display:block;position:absolute;top:50%;margin-top:-25px;background-image:url(lr.png);
 -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=45)";
  filter: alpha(opacity=45);
  -moz-opacity: 0.45;
