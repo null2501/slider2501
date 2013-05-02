@@ -11,7 +11,7 @@ function THORIUM(conf){
 	if(typeof(conf.callback)=='undefined')conf.callback=false;
 	if(typeof(conf.shadow)=='undefined')conf.shadow=false;
 	if(typeof(conf.touch)=='undefined')conf.touch=true;
-	if(typeof(conf.speed)=='undefined')conf.speed=600;
+	if(typeof(conf.speed)=='undefined')conf.speed=450;
 	if(typeof(conf.easing)=='undefined')conf.easing='ease';
 
 	var requestAnimationFrame=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame;
@@ -127,11 +127,12 @@ function THORIUM(conf){
 		if (dst==act){lk=0;return false}
 		if(conf.loop===true)dstx=-(w*(dst+1));
 		else dstx=-(w*dst);
-
+		dltx=dstx-actx;
+		
 		if(hw){
-			this.hw_mover(dstx,true);
+			this.hw_mover(dltx,true);
 		}else{
-			dtm=new Date().getTime();dltx=dstx-actx;
+			dtm=new Date().getTime();
 			this.mover();
 		}
 	}
@@ -169,15 +170,14 @@ function THORIUM(conf){
 	}
 	this.hw_mover=function(x,trans){
 		if(typeof(trans)=='undefined')trans=false;
-		var t='';
-		if(trans)t='all '+(conf.speed/1000)+'s '+conf.easing;
-		obj.style.webkitTransition=t;
-		obj.style.mozTransition=t;
-		obj.style.transition=t;
-		var m="translate3d("+x+"px,0,0)";
-		obj.style.webkitTransform=m;
-		obj.style.mozTransform=m;
-		obj.style.transform=m;
+		if(!trans){
+			obj.style.webkitTransition=obj.style.mozTransition=obj.style.transition='';
+			obj.style.webkitTransform=obj.style.mozTransform=obj.style.transform="translate3d(0,0,0)";
+			obj.style.left=x+'px';
+		}else{
+			obj.style.webkitTransition=obj.style.mozTransition=obj.style.transition='all '+(conf.speed/1000)+'s '+conf.easing;
+			obj.style.webkitTransform=obj.style.mozTransform=obj.style.transform="translate3d("+x+"px,0,0)";
+		}
 	}
 	this.hw_callback=function(){this.slide_end()}	
 	this.hw_detection=function(){
