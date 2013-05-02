@@ -235,18 +235,19 @@ function THORIUM(conf){
 }
 
 function THORIUM_TOUCH(obj,cabe) {
-	var self=this,sx,sy,st,app=0,evt='';
+	var self=this,sx,sy,app=0,evt='';
 	var supp=("ontouchstart" in document.documentElement);
 	if(supp)if(navigator.userAgent.match(/(iPod|iPhone|iPad)/) && navigator.userAgent.match(/AppleWebKit/)) app=1;
 	if(supp)obj.addEventListener('touchstart', function(e){self.tstart(e)}, false);
 
 	this.tstart=function(e){
-      sx=e.touches[0].pageX;sy=e.touches[0].pageY;st=new Date();
+      sx=e.touches[0].pageX;sy=e.touches[0].pageY;
 	  evt='';
       obj.addEventListener('touchmove', function(e){self.tmove(e)}, false);
       obj.addEventListener('touchend', function(e){self.tend(e)}, false);
 	}
 	this.tmove=function(e){
+	  if(evt=='scroll')return;
       if(e.touches.length>1||e.scale&&e.scale!=1)return;
       var dx=e.touches[0].pageX - sx,dy=e.touches[0].pageY - sy;
       if (evt=='')if(Math.abs(dx)<Math.abs(dy))evt='scroll';
