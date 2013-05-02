@@ -227,7 +227,7 @@ function THORIUM(conf){
 		if(typeof(content)=='undefined')content='';
 		var o=document.createElement('div');
 		if(id)o.setAttribute('id',id);
-	http://rinoa.hopto.org/lab/thorium-slider/demopics/ny.jpg	if(clas)o.className=clas;
+		if(clas)o.className=clas;
 		if(content)o.innerHTML=content;
 		xxobj.appendChild(o);
 	}
