@@ -2,8 +2,7 @@
 /* Twitter: @Null_2501 - https://github.com/null2501/thorium-slider */
 
 function THORIUM(conf){
-	var self=this,obj=false,xobj=false,xxobj=false,hw=false,lcnt=0,lobj=[],w=0,h=0,act=0,dst=0,actx=0,dstx=0,lk=0,dtm=0,dltx=0,tmr=false,atmr=false,ply=false,lr=[],ctrl=[],cdiv=false,mob=false,tob=false,labs=[],nxt=false;
-
+	var self=this,obj=false,xobj=false,xxobj=false,hw=false,lcnt=0,lobj=[],w=0,h=0,act=0,dst=0,actx=0,dstx=0,lk=0,dtm=0,dltx=0,tmr=false,atmr=false,ply=false,lr=[],ctrl=[],cdiv=false,mob=false,tob=false,labs=[];
 	if(typeof(conf.loop)=='undefined')conf.loop=false;
 	if(typeof(conf.auto)=='undefined')conf.auto=0;
 	if(typeof(conf.arrows)=='undefined')conf.arrows=true;
@@ -131,8 +130,7 @@ function THORIUM(conf){
 		setTimeout(function(){self.xgo(d,a)},0);
 	}
 	this.xgo=function(d,auto){
-		if(lk++>0){nxt=d;return false}
-		nxt=false;
+		if(lk++>0){return false}
 		if(typeof(auto)=='undefined')auto=false;
 		if((!auto)&&(ply))this.stop();
 		if(conf.loop===false)if(((d==='prev')&&(act<1))||((d==='next')&&(act>lcnt-2))){lk=0;return false}
@@ -171,9 +169,10 @@ function THORIUM(conf){
 		act=dst;
 		this.pos();
 		this.update();
-		lk=0;
-		if(nxt!=false){var n=nxt;nxt=false;self.go(n)}
 		if(ply){this.stop();this.play()}
+		obj.style.display='none';
+		obj.style.display='block';
+		lk=0;
 	}
 	this.mover=function(){
 		var x;
