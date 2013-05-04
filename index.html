@@ -32,10 +32,10 @@ h3 {margin:0 0 4px 0;padding:0;font-size:18px;font-weight:bold;line-height:1.4em
 <body>
 <h1>Thorium Slider Demo</h1>
 <ul id="slider1" class="sl2501">
-		<li>
+		<li data-label="New York">
 			<img src="demopics/ny.jpg">
 		</li>
-		<li>
+		<li data-label="Coffee">
 			<div class="boxwrapper coffee">
 				<div class="textbox left">
 					<h3>A Different Title</h3>
@@ -47,10 +47,10 @@ h3 {margin:0 0 4px 0;padding:0;font-size:18px;font-weight:bold;line-height:1.4em
 				</div>
 			</div>
 		</li>
-		<li>
+		<li data-label="Spock">
 			<img src="demopics/spock.jpg">
 		</li>
-		<li>
+		<li data-label="Roses">
 			<div class="boxwrapper roses">
 				<div class="textbox left">
 					<h3>A Dubious Title</h3>
@@ -63,6 +63,7 @@ h3 {margin:0 0 4px 0;padding:0;font-size:18px;font-weight:bold;line-height:1.4em
 			</div>
 		</li>
 </ul>
+<div id="xcontrols"></div>
 https://github.com/null2501/thorium-slider
 <script src="main.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -76,7 +77,8 @@ https://github.com/null2501/thorium-slider
 		shadow: 'top bottom',
 		touch: true,
 		speed: 450,
-		easing: 'ease-in-out'
+		easing: 'ease',
+		labels: false
 	});
 </script>
 </body>

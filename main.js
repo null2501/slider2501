@@ -1,8 +1,8 @@
-/* Thorium Slider, Yet Another Lightweight JavaScript Content Slider */
+/* Thorium Slider, Yet Another Lightweight JavaScript Content Slider with Touch Support */
 /* Twitter: @Null_2501 - https://github.com/null2501/thorium-slider */
 
 function THORIUM(conf){
-	var self=this,obj=false,xobj=false,xxobj=false,hw=false,lcnt=0,lobj=[],w=0,h=0,act=0,dst=0,actx=0,dstx=0,lk=0,dtm=0,dltx=0,tmr=false,atmr=false,ply=false,lr=[],ctrl=[],cdiv=false,mob=false,tob=false,nxt=false;
+	var self=this,obj=false,xobj=false,xxobj=false,hw=false,lcnt=0,lobj=[],w=0,h=0,act=0,dst=0,actx=0,dstx=0,lk=0,dtm=0,dltx=0,tmr=false,atmr=false,ply=false,lr=[],ctrl=[],cdiv=false,mob=false,tob=false,labs=[];
 
 	if(typeof(conf.loop)=='undefined')conf.loop=false;
 	if(typeof(conf.auto)=='undefined')conf.auto=0;
@@ -13,6 +13,7 @@ function THORIUM(conf){
 	if(typeof(conf.touch)=='undefined')conf.touch=true;
 	if(typeof(conf.speed)=='undefined')conf.speed=450;
 	if(typeof(conf.easing)=='undefined')conf.easing='ease';
+	if(typeof(conf.labels)=='undefined')conf.labels=false;
 
 	var requestAnimationFrame=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame;
 	if(typeof requestAnimationFrame=='undefined')requestAnimationFrame=false;
@@ -32,9 +33,11 @@ function THORIUM(conf){
 		}
 		hw=this.hw_detection();
 		if(mob)tob=new THORIUM_TOUCH(obj,function(g){self.mgo(g)});
-		lcnt=0;
+		lcnt=0;labs=[];
 		for(var i in obj.childNodes)if(typeof obj.childNodes[i].innerHTML!=='undefined'){
 			lobj[lcnt]=obj.childNodes[i];
+			if(lobj[lcnt].getAttribute('data-label'))labs[lcnt]=lobj[lcnt].getAttribute('data-label');
+			else labs[lcnt]=false;
 			if(lobj[lcnt].className.indexOf('active')>-1)act=lcnt;
 			lobj[lcnt].style.width=w+'px';lobj[lcnt].style.height=h+'px';
 			lcnt++;
@@ -56,40 +59,55 @@ function THORIUM(conf){
 		if(hw)obj.addEventListener(hw,function(){self.hw_callback()},false);
 	}
 	this.create_arrows=function(){
-		if(conf.arrows===false)return false;
 		if(lr.length==2)return true;
-		var m;
-		if(conf.arrows===true)m=xxobj;
-		else m=getElementById(conf.arrows);
-		lr['prev']=document.createElement('a');lr['prev'].className='prev';lr['prev'].href='#';m.appendChild(lr['prev']);
-		lr['next']=document.createElement('a');lr['next'].className='next';lr['next'].href='#';m.appendChild(lr['next']);
-		lr['prev'].onclick=function(){return false};lr['next'].onclick=function(){return false};
-	
+		if(conf.arrows===false)return false;
+		var m=false;
+		if(!(conf.arrows===true)){
+			if(document.getElementById(conf.arrows+'-prev')) {
+				lr['prev']=document.getElementById(conf.arrows+'-prev');
+				lr['next']=document.getElementById(conf.arrows+'-next');
+			} else m=document.getElementById(conf.arrows);
+		} else m=xxobj;
+		if(m){
+			lr['prev']=document.createElement('a');lr['prev'].className='prev';lr['prev'].href='#';m.appendChild(lr['prev']);
+			lr['next']=document.createElement('a');lr['next'].className='next';lr['next'].href='#';m.appendChild(lr['next']);
+		}
+		lr['prev'].onclick=function(){return false};lr['next'].onclick=function(){return false};	
 		this.add_event(lr['prev'],'click',function(){self.go('prev');return false});
 		this.add_event(lr['next'],'click',function(){self.go('next');return false});
 	}
 	this.create_controls=function(){
 		if(conf.controls===false)return false;
-		if(ctrl.length===lcnt)return true;
-		for(var i=0;i<ctrl.length;i++){
-			ctrl[i].parentNode.removeChild(ctrl[i]);
+		if(ctrl.length!=lcnt){
+			for(var i=0;i<ctrl.length;i++){
+				ctrl[i].parentNode.removeChild(ctrl[i]);
+			}
+			ctrl=[];
+			if(cdiv===false){
+				if(conf.controls===true){
+					cdiv=document.createElement('div');cdiv.className='controls';
+					xxobj.appendChild(cdiv);
+				} else {
+					if(document.getElementById(conf.controls+'-1'))cdiv=true;
+					else cdiv=document.getElementById(conf.controls);
+				}
+			}
+			for(i=0;i<lcnt;i++){
+				if(!(cdiv===true)){
+					ctrl[i]=document.createElement('a');ctrl[i].href='#';
+					cdiv.appendChild(ctrl[i]);
+				} else ctrl[i]=document.getElementById(conf.controls+'-'+(i+1));
+				ctrl[i].setAttribute('data-idx', i+1);
+				ctrl[i].onclick=function(){return false};
+				this.add_event(ctrl[i],'click',function(e){e=e||window.event;var o=this;if(e.srcElement)o=e.srcElement;self.go(o.getAttribute('data-idx'));return false});
+			}
 		}
-		ctrl=[];
-		if(cdiv===false){
-			if(conf.controls===true){
-				cdiv=document.createElement('div');cdiv.className='controls';
-				xxobj.appendChild(cdiv);
-			} else cdiv=document.getElementById(conf.controls);
+		if(conf.labels)for(var i=0;i<ctrl.length;i++){
+			if(labs[i]!=false) ctrl[i].innerHTML=labs[i];
+			else ctrl[i].innerHTML=i+1;
 		}
-		for(i=0;i<lcnt;i++){
-			ctrl[i]=document.createElement('a');ctrl[i].href='#';ctrl[i].setAttribute('data-idx', i+1);
-			ctrl[i].onclick=function(){return false};
-			this.add_event(ctrl[i],'click',function(e){e=e||window.event;var o=this;if(e.srcElement)o=e.srcElement;self.go(o.getAttribute('data-idx'));return false});
-			cdiv.appendChild(ctrl[i]);
-		}		
 	}
 	this.update=function(){
-		if(typeof(conf.callback)!='boolean'){conf.callback(act+1)}
 		for(var i=0;i<ctrl.length;i++){
 			if(i==act)ctrl[i].className='active';
 			else ctrl[i].className='';
@@ -103,12 +121,13 @@ function THORIUM(conf){
 			lr['next'].className='next'+add.next;
 			lr['prev'].className='prev'+add.prev;
 		}
+		if(typeof(conf.callback)!='boolean'){conf.callback({curr: act+1, tot: lcnt, play: ply, labels: labs})}
 	}
 	this.mgo=function(d) {
 		this.go(d);
 	}
 	this.go=function(d,auto){
-		if(lk++>0){nxt=d;return false}
+		if(lk++>0)return false;
 		if(typeof(auto)=='undefined')auto=false;
 		if((!auto)&&(ply))this.stop();
 		if(conf.loop===false)if(((d==='prev')&&(act<1))||((d==='next')&&(act>lcnt-2))){lk=0;return false}
@@ -147,9 +166,8 @@ function THORIUM(conf){
 		act=dst;
 		this.pos();
 		this.update();
-		lk=0;
+		setTimeout(function(){lk=0},1);
 		if(ply){this.stop();this.play()}
-		if(nxt!=false){var a=nxt;nxt=false;setTimeout(function(){self.go(a)},1)}
 	}
 	this.mover=function(){
 		var x;
@@ -256,8 +274,8 @@ function THORIUM_TOUCH(obj,cabe) {
         if(evt!='swipe'){
 			if(Math.abs(dx)>30){
 				evt='swipe';
-				if(dx>0)setTimeout(function(){cabe('prev')},1);
-				else setTimeout(function(){cabe('next')},1);
+				if(dx>0)cabe('prev');
+				else cabe('next');
 	        }	
 	    }
       }
