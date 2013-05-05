@@ -191,15 +191,10 @@ function THORIUM(conf){
 		lk=0;
 	}
 	this.mover_fade=function(first){
-		if(first){
-			lobj[act].style.zIndex=0;
-			lobj[dst].style.zIndex=1;			
-			lobj[dst].style.display='block';
-		}
-		var dt=conf.speed-(new Date().getTime()-dtm);
+		if(first){lobj[act].style.zIndex=0;lobj[dst].style.zIndex=1;lobj[dst].style.display='block'}
+		var dt=new Date().getTime()-dtm;
 		if(dt>conf.speed)dt=conf.speed;if(dt<0)dt=0;
-		var att=(Math.PI*(dt/conf.speed))+(Math.PI/2),dm=(Math.sin(att)+1)/2;
-		if(dt==0)x=1;else x=dm;
+		if(dt>=conf.speed)x=1;else x=dt/conf.speed;
 		this.alpha(lobj[act],1-x);
 		this.alpha(lobj[dst],x);
 		if(x<1){
@@ -208,9 +203,7 @@ function THORIUM(conf){
 			} else {
 				tmr=setTimeout(function(){self.mover_fade(false)},16);
 			}
-		} else {
-			self.slide_end();
-		}
+		} else self.slide_end();
 	}
 	this.mover=function(){
 		var x;
