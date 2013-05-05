@@ -32,7 +32,7 @@ h3 {margin:0 0 4px 0;padding:0;font-size:18px;font-weight:bold;line-height:1.4em
 <body>
 <h1>Thorium Slider Demo</h1>
 <ul id="slider1" class="sl2501">
-		<li data-label="New York">
+		<li data-label="New York" class='active'>
 			<img src="demopics/ny.jpg">
 		</li>
 		<li data-label="Coffee">
@@ -69,6 +69,7 @@ https://github.com/null2501/thorium-slider
 <script type="text/javascript">
 	var sl1=new THORIUM({
 		id: 'slider1',
+		mode: 'scroll',
 		auto: 4,
 		loop: true,
 		arrows: true,

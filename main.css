@@ -5,7 +5,9 @@ ul.sl2501{width:100%;height:100%;list-style:none;overflow:hidden}
 div.sl2501x > ul.sl2501 {overflow:visible}
 ul.sl2501 > li{display:block;margin:0;padding:0;width:100%;height:100%;float:left}
 ul.sl2501 > li.active{display:block}
-div.sl2501x > ul.sl2501 > li {display:block}
+div.sl2501x > ul > li {display:block}
+div.sl2501f > ul > li {display:none;position:absolute}
+div.sl2501f > ul > li.active{display:block}
 
 div.sl2501x,ul.sl2501,ul.sl2501 li,ul.sl2501 img,ul.sl2501 a{
   -webkit-transform: translate3d(0,0,0);
