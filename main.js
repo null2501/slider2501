@@ -12,13 +12,18 @@ function THORIUM(conf){
 	if(typeof(conf.shadow)=='undefined')conf.shadow=false;
 	if(typeof(conf.touch)=='undefined')conf.touch=true;
 	if(typeof(conf.speed)=='undefined')conf.speed=450;
-	if(typeof(conf.easing)=='undefined')conf.easing='ease';
+	if(typeof(conf.easing)=='undefined')conf.easing='ease-in-out';
 	if(typeof(conf.labels)=='undefined')conf.labels=false;
 
 	var requestAnimationFrame=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame;
 	if(typeof requestAnimationFrame=='undefined')requestAnimationFrame=false;
 	window.requestAnimationFrame=requestAnimationFrame;
 	if(conf.touch)mob=("ontouchstart" in document.documentElement);
+	
+	if(/Android.+Firefox\//.test(navigator.userAgent)){
+		if(conf.mode=='fade')conf.speed*=1.5;
+		else conf.speed*=1.2;
+	}
 	
 	this.init=function(){
 		if((conf.mode!='scroll')&&(conf.loop==true))conf.loop='semi';
@@ -191,7 +196,7 @@ function THORIUM(conf){
 		lk=0;
 	}
 	this.mover_fade=function(first){
-		if(first){lobj[act].style.zIndex=0;lobj[dst].style.zIndex=1;lobj[dst].style.display='block'}
+		if(first){lobj[act].style.zIndex=0;lobj[dst].style.zIndex=1;lobj[dst].style.display='block';dtm=new Date().getTime()}
 		var dt=new Date().getTime()-dtm;
 		if(dt>conf.speed)dt=conf.speed;if(dt<0)dt=0;
 		if(dt>=conf.speed)x=1;else x=dt/conf.speed;
