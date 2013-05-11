@@ -9,7 +9,6 @@ function THORIUM(conf){
 	if(typeof(conf.arrows)=='undefined')conf.arrows=true;
 	if(typeof(conf.controls)=='undefined')conf.controls=true;
 	if(typeof(conf.callback)=='undefined')conf.callback=false;
-	if(typeof(conf.shadow)=='undefined')conf.shadow=false;
 	if(typeof(conf.touch)=='undefined')conf.touch=true;
 	if(typeof(conf.speed)=='undefined')conf.speed=450;
 	if(typeof(conf.easing)=='undefined')conf.easing='ease-in-out';
@@ -28,16 +27,11 @@ function THORIUM(conf){
 	this.init=function(){
 		if((conf.mode!='scroll')&&(conf.loop==true))conf.loop='semi';
 		if(!obj){obj=document.getElementById(conf.id);w=obj.offsetWidth;h=obj.offsetHeight}
-		if(!xobj){xobj=document.createElement('div');xobj.id=conf.id+'-x';xobj.className='sl2501x';xobj.appendChild(obj.parentNode.replaceChild(xobj,obj));xobj.style.width=w+'px';xobj.style.height=h+'px';
-			if(conf.mode!='scroll')xobj.className+=' sl2501f'
-		}
+		if(!xobj){xobj=document.createElement('div');xobj.id=conf.id+'-x';xobj.className='sl2501x';xobj.appendChild(obj.parentNode.replaceChild(xobj,obj));xobj.style.width=w+'px';xobj.style.height=h+'px';if(conf.mode!='scroll')xobj.className+=' sl2501f'}
 		if(!xxobj){
 			if(document.getElementById(conf.id+'-wrapper'))xxobj=document.getElementById(conf.id+'-wrapper');
-			else{xxobj=document.createElement('div');xxobj.id=conf.id+'-wrapper';xxobj.className='sl2501-wrapper';xxobj.appendChild(xobj.parentNode.replaceChild(xxobj,xobj));xxobj.style.width=w+'px';xxobj.style.height=h+'px'}
-			if(typeof(conf.shadow)=='string'){
-				if(conf.shadow.indexOf('bottom')!=-1)this.appendDiv('','sl2501-botshadow');
-				if(conf.shadow.indexOf('top')!=-1)this.appendDiv('','sl2501-topshadow');
-			}
+			else{xxobj=document.createElement('div');xxobj.id=conf.id+'-wrapper';xxobj.appendChild(xobj.parentNode.replaceChild(xxobj,xobj))}
+			xxobj.className='sl2501-wrapper'
 		}
 		hw=this.hw_detection();
 		if(mob)tob=new THORIUM_TOUCH(obj,function(g){self.mgo(g)});
@@ -95,7 +89,7 @@ function THORIUM(conf){
 			ctrl=[];
 			if(cdiv===false){
 				if(conf.controls===true){
-					cdiv=document.createElement('div');cdiv.className='controls';
+					cdiv=document.createElement('div');cdiv.className='sl2501-pager';
 					xxobj.appendChild(cdiv);
 				} else {
 					if(document.getElementById(conf.controls+'-1'))cdiv=true;
@@ -294,8 +288,9 @@ function THORIUM(conf){
 		if(id)o.setAttribute('id',id);
 		if(clas)o.className=clas;
 		if(content)o.innerHTML=content;
-		xxobj.appendChild(o);
+		this.appendObj(o);
 	}
+	this.appendObj=function(o){xxobj.appendChild(o)}
 	this.init();
 }
 
