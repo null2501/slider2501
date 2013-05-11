@@ -13,6 +13,7 @@ function THORIUM(conf){
 	if(typeof(conf.speed)=='undefined')conf.speed=450;
 	if(typeof(conf.easing)=='undefined')conf.easing='ease-in-out';
 	if(typeof(conf.labels)=='undefined')conf.labels=false;
+	if(typeof(conf.load)=='undefined')conf.load=true;
 
 	var requestAnimationFrame=window.requestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.msRequestAnimationFrame;
 	if(typeof requestAnimationFrame=='undefined')requestAnimationFrame=false;
@@ -126,14 +127,12 @@ function THORIUM(conf){
 			lr['next'].className='next'+add.next;
 			lr['prev'].className='prev'+add.prev;
 		}
-		if(lobj[act].getAttribute('data-load')==0){
-			lobj[act].setAttribute('data-load',1);
-			this.doLoad(lobj[act]);
-			if(conf.loop==true){
-				if(act==0)this.doLoad(lobj[lcnt]);
-				if(act==lcnt-1)this.doLoad(lobj[-1]);
-			}
+		if(conf.load){
+			this.singleLoad(act);
+			this.singleLoad(act+1);
+			this.singleLoad(act-1);
 		}
+		
 		if(typeof(conf.callback)!='boolean'){conf.callback({curr: act+1, tot: lcnt, play: ply, labels: labs})}
 	}
 	this.mgo=function(d) {
@@ -308,6 +307,18 @@ function THORIUM(conf){
 				imgs[i].setAttribute('data-src','');
 			}
 		}
+	}
+	this.singleLoad=function(n){
+			if(n<0)n=lcnt-1;
+			if(n>=lcnt)n=0;
+			if(lobj[n].getAttribute('data-load')==0){
+				lobj[n].setAttribute('data-load',1);
+				this.doLoad(lobj[n]);
+				if(conf.loop==true){
+					if(n==0)this.doLoad(lobj[lcnt]);
+					if(n==lcnt-1)this.doLoad(lobj[-1]);
+				}
+			}
 	}
 	this.init();
 }
