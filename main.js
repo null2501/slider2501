@@ -75,8 +75,11 @@ function THORIUM(conf){
 			} else m=document.getElementById(conf.arrows);
 		} else m=xxobj;
 		if(m){
-			lr['prev']=document.createElement('a');lr['prev'].className='prev';lr['prev'].href='#';m.appendChild(lr['prev']);
-			lr['next']=document.createElement('a');lr['next'].className='next';lr['next'].href='#';m.appendChild(lr['next']);
+			lr['prev']=document.createElement('a');lr['prev'].className='sl2501-prev';lr['prev'].href='#';m.appendChild(lr['prev']);
+			lr['next']=document.createElement('a');lr['next'].className='sl2501-next';lr['next'].href='#';m.appendChild(lr['next']);
+			if(typeof(opera)!='undefined'){
+				lr['prev'].style.borderRadius=0;lr['next'].style.borderRadius=0;
+			}
 		}
 		lr['prev'].onclick=function(){return false};lr['next'].onclick=function(){return false};	
 		this.add_event(lr['prev'],'click',function(){self.go('prev');return false});
@@ -124,8 +127,8 @@ function THORIUM(conf){
 				if(act<1)add.prev=' blocked';
 				if(act>lcnt-2)add.next=' blocked';
 			}
-			lr['next'].className='next'+add.next;
-			lr['prev'].className='prev'+add.prev;
+			lr['next'].className='sl2501-next'+add.next;
+			lr['prev'].className='sl2501-prev'+add.prev;
 		}
 		if(conf.load){
 			this.singleLoad(act);
